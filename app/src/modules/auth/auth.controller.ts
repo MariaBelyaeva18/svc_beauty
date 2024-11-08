@@ -11,4 +11,9 @@ export class AuthController {
   async checkUser(@Body() param: { username: string; password: string }) {
     return this.authService.checkUser(param);
   }
+
+  @Post('/register')
+  async registerUser(@Body() dto) {
+    return this.authService.registerUser(dto);
+  }
 }
