@@ -1,18 +1,34 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
   constructor(@Inject('PG_CONNECTION') private postgres: any) {}
 
   async checkUser(param: { username: string; password: string }) {
-    const { rows } = await this.postgres.query(
-      `
-      SELECT password FROM users
-      WHERE login = $1;
-    `,
-      [param.username],
-    );
-    return rows.length ? rows[0].password === param.password : null;
+    try {
+      const { rows } = await this.postgres.query(
+        `
+        SELECT password FROM users
+        WHERE login = $1;
+      `,
+        [param.username],
+      );
+
+      if (!rows.length || rows[0].password !== param.password) {
+        throw new Error();
+      }
+      return {
+        message: 'Успешный вход в систему',
+      };
+    } catch (e) {
+      console.error(e);
+      throw new HttpException(
+        {
+          message: 'Неправильный логин или пароль',
+        },
+        400,
+      );
+    }
   }
 
   async registerUser(dto) {
