@@ -1,28 +1,32 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/sequelize';
+import { QueryTypes, Sequelize } from 'sequelize';
 
 @Injectable()
 export class RolesService {
-  constructor(@Inject('PG_CONNECTION') private postgres: any) {}
+  constructor(
+    @InjectConnection()
+    private readonly sequelize: Sequelize,
+  ) {}
 
   async getList() {
-    const { rows } = await this.postgres.query(
+    const data = await this.sequelize.query(
       `
-      SELECT * FROM roles WHERE "deletedAt" IS NULL ;
+      SELECT 
+        id,
+        role,
+        description
+      FROM roles
+      WHERE "deletedAt" IS NULL
     `,
+      {
+        type: QueryTypes.SELECT,
+      },
     );
+
     return {
-      data: rows,
-      message: 'Роли получены',
+      data,
+      message: 'Роли успешно получены',
     };
   }
-
-  // async createRole(dto) {
-  //   await this.postgres.query(
-  //     `
-  //     INSERT INTO users (id, name, middle_name, last_name, login, password, phone_number, role_id, "createdAt", "updatedAt")
-  //     VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, now(), now());
-  //   `,
-  //     [dto.name, dto.middleName, dto.lastName, dto.login, dto.password, dto.phone, dto.role],
-  //   );
-  // }
 }

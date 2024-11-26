@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/')
+  @Post('')
   async checkUser(@Body() param: { username: string; password: string }) {
     return this.authService.checkUser(param);
   }

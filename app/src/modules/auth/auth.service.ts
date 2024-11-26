@@ -1,69 +1,66 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/sequelize';
+import { QueryTypes, Sequelize } from 'sequelize';
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject('PG_CONNECTION') private postgres: any) {}
+  constructor(
+    @InjectConnection()
+    private readonly sequelize: Sequelize,
+  ) {}
 
   async checkUser(param: { username: string; password: string }) {
-    try {
-      const { rows } = await this.postgres.query(
-        `
-        SELECT id, name, middle_name, last_name, login, password, phone_number, role_id FROM users
-        WHERE login = $1;
-      `,
-        [param.username],
-      );
-      if (!rows.length || rows[0].password !== param.password) {
-        throw new Error();
-      }
-      delete rows[0].password;
-      return {
-        data: rows[0],
-        message: 'Успешный вход в систему',
-      };
-    } catch (e) {
-      console.error(e);
-      throw new HttpException(
-        {
-          message: 'Неправильный логин или пароль',
+    const data = await this.sequelize.query(
+      `
+      SELECT 
+        id,
+        name,
+        middle_name,
+        last_name,
+        login,
+        phone_number,
+        role_id
+      FROM users
+      WHERE users.login = :login AND users.password = :password 
+    `,
+      {
+        replacements: {
+          login: param.username,
+          password: param.password,
         },
-        400,
-      );
+        /** Чтобы не надо было доставать 1 элемент из массива */
+        plain: true,
+        type: QueryTypes.SELECT,
+      },
+    );
+
+    if (!data) {
+      throw new BadRequestException('Неправильный логин или пароль');
     }
+
+    return {
+      data,
+      message: 'Успешный вход в систему',
+    };
   }
 
   async registerUser(dto) {
-    try {
-      const { rows } = await this.postgres.query(
-        `
-            SELECT password
-            FROM users
-            WHERE login = $1;
-        `,
-        [dto.username],
-      );
-      if (rows.length) {
-        throw new Error();
-      }
-      if (!dto.password || dto.password !== dto.repeatPassword) {
-        throw new Error();
-      }
-      await this.postgres.query(
-        `
-          INSERT INTO users (id, name, middle_name, last_name, login, password, phone_number, role_id, "createdAt",
-                             "updatedAt")
-          VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, now(), now());
-      `,
-        [dto.name, dto.middle_name, dto.last_name, dto.username, dto.password, dto.phone, dto.role],
-      );
-    } catch (e) {
-      console.error(e);
-      throw new HttpException(
-        {
-          message: 'ERROR',
-        },
-        400,
-      );
+    if (!dto.password || dto.password !== dto.repeatPassword) {
+      throw new BadRequestException('Пароли не совпадают');
     }
+
+    await this.sequelize.models.UsersModel.create({
+      name: dto.name,
+      middle_name: dto.middle_name,
+      last_name: dto.last_name,
+      login: dto.username,
+      password: dto.password,
+      role_id: dto.role,
+      phone_number: dto.phone,
+    });
+
+    return {
+      message: 'Пользователь успешно создан',
+    };
   }
 }

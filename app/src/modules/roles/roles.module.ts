@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RolesController } from './roles.controller';
 import { RolesService } from './roles.service';
-import { PostgresModule } from '../postgres/postgres.module';
 
 @Module({
   controllers: [RolesController],
-  imports: [PostgresModule],
+  imports: [],
   providers: [RolesService],
   exports: [RolesService],
 })

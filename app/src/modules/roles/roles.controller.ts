@@ -7,7 +7,7 @@ import { RolesService } from './roles.service';
 export class RolesController {
   constructor(private rolesService: RolesService) {}
 
-  @Get('/')
+  @Get('')
   async getList() {
     return this.rolesService.getList();
   }
