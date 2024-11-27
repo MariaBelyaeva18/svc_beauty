@@ -119,6 +119,11 @@ module.exports = {
             allowNull: true,
             comment: 'Номер телефона',
           },
+          avatar_path: {
+            type: Sequelize.STRING,
+            allowNull: true,
+            comment: 'Путь к файлу аватарки',
+          },
           createdAt: {
             allowNull: false,
             type: Sequelize.DATE,

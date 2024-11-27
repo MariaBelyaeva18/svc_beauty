@@ -24,7 +24,7 @@ interface IUser {
   deletedAt: Date | null;
 }
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'users', paranoid: false })
 export class UsersModel extends Model<IUser> implements IUser {
   @Column({
     type: DataType.UUID,
@@ -76,6 +76,12 @@ export class UsersModel extends Model<IUser> implements IUser {
     allowNull: true,
   })
   phone_number: string | null;
+
+  @Column({
+    type: DataType.STRING(255),
+    allowNull: true,
+  })
+  avatar_path: string | null;
 
   @CreatedAt
   @Column({
