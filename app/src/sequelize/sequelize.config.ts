@@ -1,6 +1,12 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import * as process from 'node:process';
+import { EmployeeServiceModel } from './models/employeeService.model';
+import { OrderMaterialsModel } from './models/orderMaterials.model';
+import { OrdersModel } from './models/orders.model';
 import { RolesModel } from './models/roles.model';
+import { ServicesModel } from './models/services.model';
+import { StatusesModel } from './models/statuses.model';
+import { StorageModel } from './models/storage.model';
 import { UsersModel } from './models/users.model';
 
 export const sequelizeConfig = {
@@ -22,5 +28,14 @@ export const sequelizeConfig = {
     acquire: 30000,
     idle: 10000,
   },
-  models: [RolesModel, UsersModel],
+  models: [
+    RolesModel,
+    UsersModel,
+    OrdersModel,
+    StorageModel,
+    StatusesModel,
+    ServicesModel,
+    OrderMaterialsModel,
+    EmployeeServiceModel,
+  ],
 } as SequelizeModuleOptions;
