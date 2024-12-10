@@ -18,6 +18,7 @@ export class StorageRepository {
         SELECT 
             id,
             material_name AS name,
+            expiration_date AS "expirationDate",
             amount
         FROM storage
         ORDER BY material_name ASC

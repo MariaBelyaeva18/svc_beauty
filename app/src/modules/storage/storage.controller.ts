@@ -2,8 +2,8 @@ import { Controller, Post, Body, Get, Query, Patch, Delete, Param } from '@nestj
 import { StorageGetListDtoResponse } from './dto/responses/storage.getList.dto.response';
 import { StorageCreateMaterialDto } from './dto/storage.createMaterial.dto';
 import { StorageGetListDto } from './dto/storage.getList.dto';
+import { StorageUpdateMaterialDto } from './dto/storage.updateMaterial.dto';
 import { StorageService } from './storage.service';
-import { StorageUpdateMaterialDto } from './storage.updateMaterial.dto';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
 
 @Controller('storage')

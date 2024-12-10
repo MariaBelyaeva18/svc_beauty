@@ -5,6 +5,8 @@ export class StorageGetListDtoResponse {
     name: string;
 
     count: number;
+
+    expirationDate: string;
   }[];
 
   totalCount: number;

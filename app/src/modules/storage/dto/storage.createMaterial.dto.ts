@@ -6,4 +6,7 @@ export class StorageCreateMaterialDto {
 
   @IsNotEmpty()
   amount: string;
+
+  @IsNotEmpty()
+  expirationDate: string;
 }

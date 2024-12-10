@@ -4,6 +4,7 @@ interface IStorage {
   id: string;
   material_name: string;
   amount: number;
+  expiration_date: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,6 +33,13 @@ export class StorageModel extends Model<IStorage> implements IStorage {
     comment: 'Кол-во единиц материала',
   })
   amount: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    comment: 'Срок годности',
+  })
+  expiration_date: Date;
 
   @CreatedAt
   @Column({

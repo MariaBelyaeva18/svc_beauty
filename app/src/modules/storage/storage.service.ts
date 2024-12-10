@@ -4,8 +4,8 @@ import { Sequelize } from 'sequelize';
 import { StorageGetListDtoResponse } from './dto/responses/storage.getList.dto.response';
 import { StorageCreateMaterialDto } from './dto/storage.createMaterial.dto';
 import { StorageGetListDto } from './dto/storage.getList.dto';
+import { StorageUpdateMaterialDto } from './dto/storage.updateMaterial.dto';
 import { StorageRepository } from './storage.repository';
-import { StorageUpdateMaterialDto } from './storage.updateMaterial.dto';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
 
 @Injectable()
@@ -31,6 +31,7 @@ export class StorageService {
     await this.sequelize.models.StorageModel.create({
       material_name: dto.materialName,
       amount: dto.amount,
+      expiration_date: dto.expirationDate,
     });
 
     return {
@@ -44,6 +45,7 @@ export class StorageService {
       {
         materialName: dto.materialName,
         amount: dto.amount,
+        expiration_date: dto.expirationDate,
       },
       {
         where: {

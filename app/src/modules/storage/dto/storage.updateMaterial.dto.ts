@@ -9,4 +9,7 @@ export class StorageUpdateMaterialDto {
 
   @IsNotEmpty()
   amount: string;
+
+  @IsNotEmpty()
+  expirationDate: string;
 }
