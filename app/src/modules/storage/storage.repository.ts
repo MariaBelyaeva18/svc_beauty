@@ -20,6 +20,7 @@ export class StorageRepository {
             material_name AS name,
             amount
         FROM storage
+        ORDER BY material_name ASC
         LIMIT :limit
         OFFSET :offset
       `,

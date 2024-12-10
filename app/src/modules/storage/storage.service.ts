@@ -5,6 +5,7 @@ import { StorageGetListDtoResponse } from './dto/responses/storage.getList.dto.r
 import { StorageCreateMaterialDto } from './dto/storage.createMaterial.dto';
 import { StorageGetListDto } from './dto/storage.getList.dto';
 import { StorageRepository } from './storage.repository';
+import { StorageUpdateMaterialDto } from './storage.updateMaterial.dto';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
 
 @Injectable()
@@ -14,6 +15,16 @@ export class StorageService {
     private readonly sequelize: Sequelize,
     private readonly storageRepository: StorageRepository,
   ) {}
+
+  /** Получение списка материалов со склада */
+  async getList(dto: StorageGetListDto): PromiseResponseDto<StorageGetListDtoResponse> {
+    const data = await this.storageRepository.getList(dto);
+
+    return {
+      data,
+      message: 'Список материалов на складе успешно получен',
+    };
+  }
 
   /** Создание новой позиции на складе */
   async createMaterial(dto: StorageCreateMaterialDto) {
@@ -27,13 +38,22 @@ export class StorageService {
     };
   }
 
-  /** Получение списка материалов со склада */
-  async getList(dto: StorageGetListDto): PromiseResponseDto<StorageGetListDtoResponse> {
-    const data = await this.storageRepository.getList(dto);
+  /** Обновление материала */
+  async updateMaterial(dto: StorageUpdateMaterialDto) {
+    await this.sequelize.models.StorageModel.update(
+      {
+        materialName: dto.materialName,
+        amount: dto.amount,
+      },
+      {
+        where: {
+          id: dto.id,
+        },
+      },
+    );
 
     return {
-      data,
-      message: 'Список материалов на складе успешно получен',
+      message: 'Материал успешно создан',
     };
   }
 }
