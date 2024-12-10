@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Patch, Delete, Param } from '@nestjs/common';
 import { StorageGetListDtoResponse } from './dto/responses/storage.getList.dto.response';
 import { StorageCreateMaterialDto } from './dto/storage.createMaterial.dto';
 import { StorageGetListDto } from './dto/storage.getList.dto';
@@ -23,5 +23,10 @@ export class StorageController {
   @Patch()
   updateMaterial(@Body() dto: StorageUpdateMaterialDto): PromiseResponseDto {
     return this.storageService.updateMaterial(dto);
+  }
+
+  @Delete('/:materialId')
+  deleteMaterial(@Param('materialId') materialId: string): PromiseResponseDto {
+    return this.storageService.deleteMaterial(materialId);
   }
 }

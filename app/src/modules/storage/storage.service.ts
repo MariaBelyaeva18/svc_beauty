@@ -27,7 +27,7 @@ export class StorageService {
   }
 
   /** Создание новой позиции на складе */
-  async createMaterial(dto: StorageCreateMaterialDto) {
+  async createMaterial(dto: StorageCreateMaterialDto): PromiseResponseDto {
     await this.sequelize.models.StorageModel.create({
       material_name: dto.materialName,
       amount: dto.amount,
@@ -39,7 +39,7 @@ export class StorageService {
   }
 
   /** Обновление материала */
-  async updateMaterial(dto: StorageUpdateMaterialDto) {
+  async updateMaterial(dto: StorageUpdateMaterialDto): PromiseResponseDto {
     await this.sequelize.models.StorageModel.update(
       {
         materialName: dto.materialName,
@@ -54,6 +54,19 @@ export class StorageService {
 
     return {
       message: 'Материал успешно создан',
+    };
+  }
+
+  /** Удаление материала */
+  async deleteMaterial(materialId: string): PromiseResponseDto {
+    await this.sequelize.models.StorageModel.destroy({
+      where: {
+        id: materialId,
+      },
+    });
+
+    return {
+      message: 'Материал успешно удален',
     };
   }
 }
