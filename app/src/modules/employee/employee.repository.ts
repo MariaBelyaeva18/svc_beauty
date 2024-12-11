@@ -3,6 +3,7 @@ import { InjectConnection } from '@nestjs/sequelize';
 import { QueryTypes, Sequelize } from 'sequelize';
 import { EmployeeGetListDto } from './dto/employee.getList.dto';
 import { EmployeeGetListRepositoryDtoResponse } from './dto/repository/responses/employee.getListRepository.dto.response';
+import { EmployeeGetMasterServicesDto } from './dto/repository/responses/employee.getMasterServices.dto';
 
 @Injectable()
 export class EmployeeRepository {
@@ -57,5 +58,26 @@ export class EmployeeRepository {
       data,
       totalCount: +totalCount,
     };
+  }
+
+  /** Получение услуг мастеров */
+  async getMasterServices(masterIds: string[]): Promise<EmployeeGetMasterServicesDto[]> {
+    return this.sequelize.query(
+      `
+        SELECT
+            services.id,
+            es.master_id AS "masterId",
+            services.name
+        FROM employee_service es
+        LEFT JOIN services ON services.id = es.service_id
+        WHERE es.master_id IN (:masterIds)
+      `,
+      {
+        replacements: {
+          masterIds,
+        },
+        type: QueryTypes.SELECT,
+      },
+    );
   }
 }

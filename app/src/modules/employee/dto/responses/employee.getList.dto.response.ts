@@ -17,6 +17,11 @@ export class EmployeeGetListDtoResponse {
     roleId: roleTypes;
 
     roleName: string;
+
+    masterServices: {
+      id: string;
+      name: string;
+    }[];
   }[];
 
   totalCount: number;

@@ -18,4 +18,7 @@ export class EmployeeUpdateDto {
 
   @IsNotEmpty()
   roleId: roleTypes;
+
+  @IsNotEmpty()
+  masterServiceIds: string[];
 }

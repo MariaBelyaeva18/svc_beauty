@@ -15,4 +15,7 @@ export class EmployeeCreateDto {
 
   @IsNotEmpty()
   roleId: roleTypes;
+
+  @IsNotEmpty()
+  masterServiceIds: string[];
 }
