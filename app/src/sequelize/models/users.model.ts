@@ -24,6 +24,8 @@ interface IUser {
   deletedAt: Date | null;
 }
 
+export type roleTypes = 'client' | 'master' | 'admin';
+
 @Table({ tableName: 'users', paranoid: false })
 export class UsersModel extends Model<IUser> implements IUser {
   @Column({
@@ -69,7 +71,7 @@ export class UsersModel extends Model<IUser> implements IUser {
     allowNull: false,
     defaultValue: 'client',
   })
-  role_id: 'client' | 'master' | 'admin';
+  role_id: roleTypes;
 
   @Column({
     type: DataType.STRING(255),
