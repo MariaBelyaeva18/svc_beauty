@@ -30,6 +30,7 @@ export class EmployeeService {
       const accValue = acc[item.masterId] || [];
 
       return {
+        ...acc,
         [item.masterId]: [
           ...accValue,
           {
@@ -61,7 +62,7 @@ export class EmployeeService {
           middle_name: dto.middleName,
           last_name: dto.lastName,
           phone_number: dto.phone,
-          roleId: dto.roleId,
+          role_id: dto.roleId,
         },
         {
           returning: true,
@@ -92,7 +93,7 @@ export class EmployeeService {
           middle_name: dto.middleName,
           last_name: dto.lastName,
           phone_number: dto.phone,
-          roleId: dto.roleId,
+          role_id: dto.roleId,
         },
         {
           where: {

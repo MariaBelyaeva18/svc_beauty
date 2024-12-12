@@ -16,8 +16,8 @@ export class EmployeeController {
   }
 
   @Post()
-  create(@Body() createServiceDto: EmployeeCreateDto) {
-    return this.employeeService.create(createServiceDto);
+  create(@Body() dto: EmployeeCreateDto) {
+    return this.employeeService.create(dto);
   }
 
   @Put()
