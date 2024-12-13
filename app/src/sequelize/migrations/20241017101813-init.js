@@ -143,6 +143,26 @@ module.exports = {
         },
       );
 
+      await queryInterface.bulkInsert(
+        'users',
+        [
+          {
+            id: 'e1125c74-0354-4bc9-89e0-f76849d9da0c',
+            name: 'Мария',
+            middle_name: 'Вадимовна',
+            last_name: 'Беляева',
+            login: 'admin',
+            password: '123',
+            role_id: 'admin',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        {
+          transaction,
+        },
+      );
+
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
