@@ -104,7 +104,7 @@ export class UsersModel extends Model<IUser> implements IUser {
   @DeletedAt
   @Column({
     type: DataType.DATE,
-    defaultValue: DataType.NOW,
+    defaultValue: null,
     allowNull: true,
   })
   deletedAt: Date;

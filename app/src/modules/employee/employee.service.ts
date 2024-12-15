@@ -4,10 +4,12 @@ import { Sequelize, Transaction } from 'sequelize';
 import { EmployeeCreateDto } from './dto/employee.create.dto';
 import { EmployeeUpdateDto } from './dto/employee.update.dto';
 import { EmployeeUpsertEmployeeServicesDto } from './dto/employee.upsertEmployeeServices.dto';
+import { EmployeeGetDetailInfoDtoResponse } from './dto/responses/employee.getDetailInfo.dto.response';
 import { EmployeeGetListDtoResponse } from './dto/responses/employee.getList.dto.response';
 import { EmployeeRepository } from './employee.repository';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
 import { StorageGetListDto } from '../storage/dto/storage.getList.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class EmployeeService {
@@ -15,6 +17,7 @@ export class EmployeeService {
     @InjectConnection()
     private readonly sequelize: Sequelize,
     private readonly employeeRepository: EmployeeRepository,
+    private readonly usersService: UsersService,
   ) {}
 
   /** Получение списка мастеров */
@@ -53,8 +56,23 @@ export class EmployeeService {
     };
   }
 
+  /** Получение детальной информации */
+  async getDetailInfo(masterId: string): PromiseResponseDto<EmployeeGetDetailInfoDtoResponse> {
+    const data = await this.employeeRepository.getDetailInfo(masterId);
+
+    const masterServices = await this.employeeRepository.getMasterServices([masterId]);
+
+    return {
+      data: {
+        ...data,
+        masterServices: masterServices.map((item) => item.id),
+      },
+      message: 'Мастер успешно получен',
+    };
+  }
+
   /** Создание мастера */
-  async create(dto: EmployeeCreateDto) {
+  async create(dto: EmployeeCreateDto, avatarFile: Express.Multer.File): PromiseResponseDto {
     await this.sequelize.transaction(async (transaction) => {
       const masterInfo = await this.sequelize.models.UsersModel.create(
         {
@@ -63,6 +81,8 @@ export class EmployeeService {
           last_name: dto.lastName,
           phone_number: dto.phone,
           role_id: dto.roleId,
+          login: dto.username,
+          password: dto.password,
         },
         {
           returning: true,
@@ -77,6 +97,10 @@ export class EmployeeService {
         },
         transaction,
       );
+
+      if (avatarFile) {
+        await this.usersService.updateAvatar(masterInfo['id'], avatarFile, transaction);
+      }
     });
 
     return {
@@ -94,11 +118,14 @@ export class EmployeeService {
           last_name: dto.lastName,
           phone_number: dto.phone,
           role_id: dto.roleId,
+          login: dto.username,
+          password: dto.password,
         },
         {
           where: {
             id: dto.id,
           },
+          transaction,
         },
       );
 

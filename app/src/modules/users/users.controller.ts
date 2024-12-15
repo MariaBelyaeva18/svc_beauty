@@ -26,7 +26,14 @@ export class UsersController {
   }
 
   @Post('avatar/:userId')
-  @UseInterceptors(FileInterceptor('file', {}))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        files: 1,
+        fileSize: 10 * 1024 * 1024,
+      },
+    }),
+  )
   updateAvatar(@UploadedFile() file: Express.Multer.File, @Param('userId') userId: string) {
     return this.usersService.updateAvatar(userId, file);
   }

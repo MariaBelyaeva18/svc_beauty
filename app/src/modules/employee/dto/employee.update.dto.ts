@@ -17,6 +17,12 @@ export class EmployeeUpdateDto {
   phone?: string;
 
   @IsNotEmpty()
+  username: string;
+
+  @IsNotEmpty()
+  password: string;
+
+  @IsNotEmpty()
   roleId: roleTypes;
 
   @IsNotEmpty()

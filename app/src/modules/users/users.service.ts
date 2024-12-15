@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
-import { QueryTypes, Sequelize } from 'sequelize';
+import { QueryTypes, Sequelize, Transaction } from 'sequelize';
 import * as fs from 'node:fs';
 import { extname } from 'path';
 
@@ -48,7 +48,7 @@ export class UsersService {
     });
   }
 
-  async updateAvatar(userId: string, file: Express.Multer.File) {
+  async updateAvatar(userId: string, file: Express.Multer.File, transaction?: Transaction) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const fileExt = extname(file.originalname);
     const fileName = `${file.fieldname}-${uniqueSuffix}${fileExt}`;
@@ -68,6 +68,7 @@ export class UsersService {
         where: {
           id: userId,
         },
+        transaction,
       },
     );
 
