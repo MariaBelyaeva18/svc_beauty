@@ -1,9 +1,9 @@
 export class EmployeeAbsenceGetListResponseDto {
   id: string;
 
-  dateFrom: string;
+  dateFrom: Date;
 
-  dateTo: string;
+  dateTo: Date;
 
   reason: string;
 

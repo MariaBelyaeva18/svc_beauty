@@ -24,7 +24,6 @@ export class EmployeeAbsenceRepository {
           ea.reason,
           users.id AS "employeeId",
           CONCAT(users.name,
-                 CASE WHEN users.middle_name IS NOT NULL AND users.middle_name != '' THEN ' ' || users.middle_name ELSE '' END,
                  CASE WHEN users.last_name IS NOT NULL AND users.last_name != '' THEN ' ' || users.last_name ELSE '' END
           ) AS "employeeName"
         FROM employee_absence ea

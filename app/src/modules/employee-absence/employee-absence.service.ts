@@ -61,8 +61,8 @@ export class EmployeeAbsenceService {
       data: data.map((item) => {
         return {
           id: item.id,
-          dateFrom: item.dateFrom,
-          dateTo: item.dateTo,
+          dateFrom: new Date(item.dateFrom),
+          dateTo: new Date(item.dateTo),
           reason: item.reason,
           employee: {
             id: item.employeeId,
