@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { EmployeeAbsenceService } from './employee-absence.service';
 import { EmployeeAbsenceController } from './employee-absence.controller';
+import { EmployeeAbsenceRepository } from './employee-absence.repository';
+import { EmployeeAbsenceService } from './employee-absence.service';
 
 @Module({
   controllers: [EmployeeAbsenceController],
-  providers: [EmployeeAbsenceService]
+  providers: [EmployeeAbsenceService, EmployeeAbsenceRepository],
 })
 export class EmployeeAbsenceModule {}

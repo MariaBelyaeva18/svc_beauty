@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize';
 import { EmployeeAbsenceCreateDto } from './dto/employee-absence.create.dto';
+import { EmployeeAbsenceGetListDto } from './dto/employee-absence.getList.dto';
 import { EmployeeAbsenceUpdateDto } from './dto/employee-absence.update.dto';
+import { EmployeeAbsenceGetListResponseDto } from './dto/responses/employee-absence.getList.response.dto';
+import { EmployeeAbsenceRepository } from './employee-absence.repository';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
 
 @Injectable()
@@ -10,6 +13,7 @@ export class EmployeeAbsenceService {
   constructor(
     @InjectConnection()
     private readonly sequelize: Sequelize,
+    private readonly employeeAbsenceRepository: EmployeeAbsenceRepository,
   ) {}
 
   /** Создание отсутствия */
@@ -44,6 +48,29 @@ export class EmployeeAbsenceService {
 
     return {
       message: 'Отсутствие успешно обновлено',
+    };
+  }
+
+  /** Получение списка отсутствий за определенный период */
+  async getList(
+    dto: EmployeeAbsenceGetListDto,
+  ): PromiseResponseDto<EmployeeAbsenceGetListResponseDto[]> {
+    const data = await this.employeeAbsenceRepository.getList(dto);
+
+    return {
+      data: data.map((item) => {
+        return {
+          id: item.id,
+          dateFrom: item.dateFrom,
+          dateTo: item.dateTo,
+          reason: item.reason,
+          employee: {
+            id: item.employeeId,
+            name: item.employeeName,
+          },
+        };
+      }),
+      message: 'Список отсутствий успешно получен',
     };
   }
 }
