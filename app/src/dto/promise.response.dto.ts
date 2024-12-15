@@ -4,4 +4,4 @@ export class ResponseDto<T = unknown> {
   data?: T;
 }
 
-export type PromiseResponseDto<T = unknown> = Promise<ResponseDto<T>>;
+export type PromiseResponseDto<T = void> = Promise<ResponseDto<T>>;

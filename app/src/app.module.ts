@@ -7,6 +7,7 @@ import { StorageModule } from './modules/storage/storage.module';
 import { UsersModule } from './modules/users/users.module';
 import { sequelizeConfig } from './sequelize/sequelize.config';
 import { EmployeeModule } from './modules/employee/employee.module';
+import { EmployeeAbsenceModule } from './modules/employee-absence/employee-absence.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EmployeeModule } from './modules/employee/employee.module';
     StorageModule,
     ServicesModule,
     EmployeeModule,
+    EmployeeAbsenceModule,
   ],
   controllers: [],
   providers: [],

@@ -1,5 +1,6 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import * as process from 'node:process';
+import { EmployeeAbsenceModel } from './models/employeAbsense.model';
 import { EmployeeServiceModel } from './models/employeeService.model';
 import { OrderMaterialsModel } from './models/orderMaterials.model';
 import { OrdersModel } from './models/orders.model';
@@ -37,5 +38,6 @@ export const sequelizeConfig = {
     ServicesModel,
     OrderMaterialsModel,
     EmployeeServiceModel,
+    EmployeeAbsenceModel,
   ],
 } as SequelizeModuleOptions;
