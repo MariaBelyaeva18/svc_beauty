@@ -3,6 +3,7 @@ import { OrdersCreateDto } from './dto/orders.create.dto';
 import { OrdersGetListDto } from './dto/orders.getList.dto';
 import { OrdersGetMastersListDto } from './dto/orders.getMastersList.dto';
 import { OrdersUpdateDto } from './dto/orders.update.dto';
+import { OrdersGetListResponseDto } from './dto/responses/orders.getList.response.dto';
 import { OrdersGetMastersListResponseDto } from './dto/responses/orders.getMastersList.response.dto';
 import { OrdersService } from './orders.service';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
@@ -22,7 +23,7 @@ export class OrdersController {
   }
 
   @Get('/list')
-  getList(@Query() dto: OrdersGetListDto): PromiseResponseDto {
+  getList(@Query() dto: OrdersGetListDto): PromiseResponseDto<OrdersGetListResponseDto> {
     return this.ordersService.getList(dto);
   }
 

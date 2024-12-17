@@ -5,6 +5,7 @@ import { OrdersCreateDto } from './dto/orders.create.dto';
 import { OrdersGetListDto } from './dto/orders.getList.dto';
 import { OrdersGetMastersListDto } from './dto/orders.getMastersList.dto';
 import { OrdersUpdateDto } from './dto/orders.update.dto';
+import { OrdersGetListResponseDto } from './dto/responses/orders.getList.response.dto';
 import { OrdersGetMastersListResponseDto } from './dto/responses/orders.getMastersList.response.dto';
 import { OrdersRepository } from './orders.repository';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
@@ -57,10 +58,31 @@ export class OrdersService {
   }
 
   /** Получение списка заказов */
-  async getList(dto: OrdersGetListDto): PromiseResponseDto {
+  async getList(dto: OrdersGetListDto): PromiseResponseDto<OrdersGetListResponseDto> {
     const data = await this.ordersRepository.getList(dto);
 
     return {
+      data: {
+        data: data.data.map((item) => ({
+          id: item.id,
+          executionDate: item.executionDate,
+          service: {
+            id: item.serviceId,
+            name: item.serviceName,
+          },
+          client: {
+            id: item.clientId,
+            name: item.clientName,
+          },
+          master: {
+            id: item.masterId,
+            name: item.masterName,
+          },
+          description: item.description,
+          status: item.status,
+        })),
+        count: data.count,
+      },
       message: 'Список заказов успешно получен',
     };
   }
