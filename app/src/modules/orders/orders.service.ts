@@ -9,6 +9,7 @@ import { OrdersGetListResponseDto } from './dto/responses/orders.getList.respons
 import { OrdersGetMastersListResponseDto } from './dto/responses/orders.getMastersList.response.dto';
 import { OrdersRepository } from './orders.repository';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
+import { orderStatuses } from '../../sequelize/models/statuses.model';
 
 @Injectable()
 export class OrdersService {
@@ -98,11 +99,11 @@ export class OrdersService {
     };
   }
 
-  /** Отмена заказа */
-  async cancelOrder(orderId: string): PromiseResponseDto {
+  /** Смена статуса заказа */
+  async changeOrderStatus(orderId: string, status: orderStatuses): PromiseResponseDto {
     await this.sequelize.models.OrdersModel.update(
       {
-        status_id: 'canceled',
+        status_id: status,
       },
       {
         where: {
@@ -112,7 +113,7 @@ export class OrdersService {
     );
 
     return {
-      message: 'Заказ отменен',
+      message: 'Статус заказа успешно изменен',
     };
   }
 }

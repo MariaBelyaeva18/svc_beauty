@@ -36,6 +36,16 @@ export class OrdersController {
 
   @Patch('/cancel/:orderId')
   cancelOrder(@Param('orderId') orderId: string): PromiseResponseDto {
-    return this.ordersService.cancelOrder(orderId);
+    return this.ordersService.changeOrderStatus(orderId, 'canceled');
+  }
+
+  @Patch('/accept/:orderId')
+  acceptOrder(@Param('orderId') orderId: string): PromiseResponseDto {
+    return this.ordersService.changeOrderStatus(orderId, 'accepted');
+  }
+
+  @Patch('/done/:orderId')
+  doneOrder(@Param('orderId') orderId: string): PromiseResponseDto {
+    return this.ordersService.changeOrderStatus(orderId, 'done');
   }
 }
