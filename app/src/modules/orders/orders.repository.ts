@@ -58,7 +58,7 @@ export class OrdersRepository {
                      CASE WHEN mu.last_name IS NOT NULL AND mu.last_name != '' THEN ' ' || mu.last_name ELSE '' END
               ) AS "masterName",
               orders.description,
-              orders.status_id AS "status"
+              get_order_status(orders.status_id, orders.execution_date) AS "status"
           FROM orders
           LEFT JOIN services ON services.id = orders.service_id
           LEFT JOIN users cu ON cu.id = orders.client_id
