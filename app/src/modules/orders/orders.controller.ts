@@ -28,7 +28,7 @@ export class OrdersController {
 
   @Get('/master')
   getMastersList(
-    dto: OrdersGetMastersListDto,
+    @Query() dto: OrdersGetMastersListDto,
   ): PromiseResponseDto<OrdersGetMastersListResponseDto[]> {
     return this.ordersService.getMastersList(dto);
   }

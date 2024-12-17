@@ -28,8 +28,8 @@ export class EmployeeAbsenceRepository {
           ) AS "employeeName"
         FROM employee_absence ea
                LEFT JOIN users ON users.id = ea.employee_id
-        WHERE EXTRACT(MONTH FROM ea.date_from) = :month
-          AND EXTRACT(YEAR FROM ea.date_from) = :year;
+        WHERE :month BETWEEN EXTRACT(MONTH FROM ea.date_from) AND EXTRACT(MONTH FROM ea.date_to)
+          AND :year BETWEEN EXTRACT(YEAR FROM ea.date_from) AND EXTRACT(YEAR FROM ea.date_to);
       `,
       {
         replacements: {

@@ -54,7 +54,7 @@ export class OrdersRepository {
         WHERE users.role_id = 'master'
           AND NOT EXISTS(
           SELECT * FROM employee_absence ea
-          WHERE ea.employee_id = users.id AND :executionDate NOT BETWEEN ea.date_from AND ea.date_to
+          WHERE ea.employee_id = users.id AND :executionDate BETWEEN ea.date_from AND ea.date_to
         )
           AND EXISTS(
           SELECT * FROM employee_service es

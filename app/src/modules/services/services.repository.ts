@@ -28,8 +28,8 @@ export class ServicesRepository {
       `,
       {
         replacements: {
-          limit: dto.limit,
-          offset: dto.offset,
+          limit: dto.limit || 100,
+          offset: dto.offset || 0,
         },
         type: QueryTypes.SELECT,
       },
