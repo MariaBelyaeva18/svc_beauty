@@ -75,4 +75,22 @@ export class OrdersService {
       message: 'Список доступных мастеров успешно получен',
     };
   }
+
+  /** Отмена заказа */
+  async cancelOrder(orderId: string): PromiseResponseDto {
+    await this.sequelize.models.OrdersModel.update(
+      {
+        status_id: 'canceled',
+      },
+      {
+        where: {
+          id: orderId,
+        },
+      },
+    );
+
+    return {
+      message: 'Заказ отменен',
+    };
+  }
 }
