@@ -8,15 +8,9 @@ module.exports = {
         'statuses',
         {
           id: {
-            type: Sequelize.UUID,
+            type: Sequelize.STRING,
             unique: true,
             primaryKey: true,
-            defaultValue: Sequelize.UUIDV4,
-          },
-          status: {
-            type: Sequelize.STRING(30),
-            allowNull: false,
-            comment: 'название статуса',
           },
           description: {
             type: Sequelize.STRING,
@@ -34,6 +28,39 @@ module.exports = {
         },
         {
           comment: 'Статусы',
+          transaction,
+        },
+      );
+
+      await queryInterface.bulkInsert(
+        'statuses',
+        [
+          {
+            id: 'created',
+            description: 'Заказ создан пользователем',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          {
+            id: 'canceled',
+            description: 'Заказ отменен',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          {
+            id: 'accepted',
+            description: 'Заказ принят к работе',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          {
+            id: 'done',
+            description: 'Заказ выполнен',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        {
           transaction,
         },
       );
@@ -185,7 +212,7 @@ module.exports = {
             comment: 'Комментарий к заказу',
           },
           status_id: {
-            type: Sequelize.UUID,
+            type: Sequelize.STRING,
             allowNull: false,
             references: {
               key: 'id',

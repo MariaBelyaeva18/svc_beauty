@@ -1,8 +1,9 @@
 import { Table, Column, Model, DataType, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 
+export type orderStatuses = 'done' | 'accepted' | 'canceled' | 'created';
+
 interface IStatus {
-  id: string;
-  status: string;
+  id: orderStatuses;
   description: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -11,19 +12,10 @@ interface IStatus {
 @Table({ tableName: 'statuses', paranoid: false, comment: 'Статусы' })
 export class StatusesModel extends Model<IStatus> implements IStatus {
   @Column({
-    type: DataType.UUID,
-    unique: true,
+    type: DataType.STRING,
     primaryKey: true,
-    defaultValue: DataType.UUIDV4,
   })
-  id: string;
-
-  @Column({
-    type: DataType.STRING(30),
-    allowNull: false,
-    comment: 'Название статуса',
-  })
-  status: string;
+  id: orderStatuses;
 
   @Column({
     type: DataType.STRING,

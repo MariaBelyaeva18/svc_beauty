@@ -73,7 +73,7 @@ export class OrdersModel extends Model<IOrder> implements IOrder {
 
   @ForeignKey(() => StatusesModel)
   @Column({
-    type: DataType.UUID,
+    type: DataType.STRING,
     allowNull: false,
     comment: 'id статуса',
   })
