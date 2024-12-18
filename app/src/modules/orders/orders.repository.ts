@@ -5,6 +5,7 @@ import { OrdersGetListRepositoryDto } from './dto/repository/orders.getList.repo
 import { OrdersGetMastersListRepositoryDto } from './dto/repository/orders.getMastersList.repository.dto';
 import { OrdersGetListResponseRepositoryDto } from './dto/repository/responses/orders.getList.response.repository.dto';
 import { OrdersGetMastersListResponseRepositoryDto } from './dto/repository/responses/orders.getMastersList.response.repository.dto';
+import { OrdersGetStatusesForCurrentMonthResponseRepositoryDto } from './dto/repository/responses/orders.getStatusesForCurrentMonth.response.repository.dto';
 import { roleTypes } from '../../sequelize/models/users.model';
 
 @Injectable()
@@ -129,5 +130,24 @@ export class OrdersRepository {
     )) as OrdersGetMastersListResponseRepositoryDto[];
 
     return data;
+  }
+
+  /** Получение кол-во статусов */
+  async getStatusesForCurrentMonth(): Promise<
+    OrdersGetStatusesForCurrentMonthResponseRepositoryDto[]
+  > {
+    return (await this.sequelize.query(
+      `
+      SELECT
+        status_id AS status,
+        COUNT(*) AS count
+      FROM orders
+      WHERE DATE_TRUNC('month', "createdAt") = DATE_TRUNC('month', CURRENT_DATE)
+      GROUP BY status_id
+    `,
+      {
+        type: QueryTypes.SELECT,
+      },
+    )) as OrdersGetStatusesForCurrentMonthResponseRepositoryDto[];
   }
 }

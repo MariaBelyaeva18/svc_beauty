@@ -1,4 +1,14 @@
-import { Controller, Post, Body, Put, Get, Query, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Put,
+  Get,
+  Query,
+  Patch,
+  Param,
+  StreamableFile,
+} from '@nestjs/common';
 import { OrdersCreateDto } from './dto/orders.create.dto';
 import { OrdersGetListDto } from './dto/orders.getList.dto';
 import { OrdersGetMastersListDto } from './dto/orders.getMastersList.dto';
@@ -47,5 +57,10 @@ export class OrdersController {
   @Patch('/done/:orderId')
   doneOrder(@Param('orderId') orderId: string): PromiseResponseDto {
     return this.ordersService.changeOrderStatus(orderId, 'done');
+  }
+
+  @Get('report')
+  generatePdfReport(): Promise<StreamableFile> {
+    return this.ordersService.generatePdfReport();
   }
 }

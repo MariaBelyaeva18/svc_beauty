@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize';
+import { createReadStream } from 'fs';
+import * as path from 'node:path';
 import { OrdersCreateDto } from './dto/orders.create.dto';
 import { OrdersGetListDto } from './dto/orders.getList.dto';
 import { OrdersGetMastersListDto } from './dto/orders.getMastersList.dto';
@@ -115,5 +117,44 @@ export class OrdersService {
     return {
       message: 'Статус заказа успешно изменен',
     };
+  }
+
+  /** Генерация отчета в пдф.
+   *  формируем таблицу с кол-вом заказов в определенном статусе за текущий месяц
+   * */
+  async generatePdfReport(): Promise<StreamableFile> {
+    const data = await this.ordersRepository.getStatusesForCurrentMonth();
+
+    const fs = require('fs');
+    const PDFDocument = require('pdfkit-table');
+
+    // Данные для таблицы
+    const tableArray = {
+      headers: ['Statuses', 'Amount'],
+      rows: data.map((item) => [item.status, item.count]),
+    };
+
+    // Путь для сохранения PDF
+    const filePath = path.join(__dirname, 'report.pdf');
+
+    // Создаем PDF документ
+    const doc = new PDFDocument({ margin: 30, size: 'A4' });
+    // Записываем в файл
+    doc.pipe(fs.createWriteStream(filePath));
+
+    // Создаем первую таблицу
+    doc.table(tableArray, { width: 300 });
+
+    // Заканчиваем генерацию PDF
+    doc.end();
+
+    // Создаем поток для чтения файла
+    const fileStream = createReadStream(filePath);
+
+    // Возвращаем StreamableFile
+    return new StreamableFile(fileStream, {
+      type: 'application/pdf',
+      disposition: 'filename=report.pdf',
+    });
   }
 }
