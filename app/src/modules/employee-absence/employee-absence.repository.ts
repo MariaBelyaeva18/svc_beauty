@@ -23,12 +23,13 @@ export class EmployeeAbsenceRepository {
           ea.date_to AS "dateTo",
           ea.reason,
           users.id AS "employeeId",
+          ea."deletedAt",
           CONCAT(users.name,
                  CASE WHEN users.last_name IS NOT NULL AND users.last_name != '' THEN ' ' || users.last_name ELSE '' END
           ) AS "employeeName"
         FROM employee_absence ea
                LEFT JOIN users ON users.id = ea.employee_id
-        WHERE :month BETWEEN EXTRACT(MONTH FROM ea.date_from) AND EXTRACT(MONTH FROM ea.date_to)
+        WHERE ea."deletedAt" IS NULL AND :month BETWEEN EXTRACT(MONTH FROM ea.date_from) AND EXTRACT(MONTH FROM ea.date_to)
           AND :year BETWEEN EXTRACT(YEAR FROM ea.date_from) AND EXTRACT(YEAR FROM ea.date_to);
       `,
       {

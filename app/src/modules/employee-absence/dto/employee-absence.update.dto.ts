@@ -15,4 +15,6 @@ export class EmployeeAbsenceUpdateDto {
 
   @IsNotEmpty()
   reason: string;
+
+  deletedAt: string;
 }

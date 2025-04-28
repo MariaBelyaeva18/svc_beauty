@@ -38,6 +38,7 @@ export class EmployeeAbsenceService {
         date_from: dto.dateFrom,
         date_to: dto.dateTo,
         reason: dto.reason,
+        deletedAt: dto.deletedAt,
       },
       {
         where: {
