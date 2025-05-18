@@ -20,7 +20,7 @@ module.exports = {
   ignorePatterns: ['.eslintrc.js'],
   rules: {
     "camelcase": "off",
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-console': ['error', { allow: ['error'] }],
     "import/prefer-default-export": "off",
     "no-useless-constructor": "off",
     "dot-notation": "off",

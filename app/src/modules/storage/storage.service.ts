@@ -43,7 +43,7 @@ export class StorageService {
   async updateMaterial(dto: StorageUpdateMaterialDto): PromiseResponseDto {
     await this.sequelize.models.StorageModel.update(
       {
-        materialName: dto.materialName,
+        material_name: dto.materialName,
         amount: dto.amount,
         expiration_date: dto.expirationDate,
       },
@@ -55,7 +55,7 @@ export class StorageService {
     );
 
     return {
-      message: 'Материал успешно создан',
+      message: 'Материал успешно отредактирован',
     };
   }
 
