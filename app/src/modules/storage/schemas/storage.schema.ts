@@ -11,10 +11,13 @@ const messages = {
   'date.iso': 'errorInvalidDateFormat',
 };
 
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
 const create = Joi.object({
   materialName: Joi.string().empty([null, '']).required().messages(messages),
   amount: Joi.number().empty([null, '']).required().min(1).messages(messages),
-  expirationDate: Joi.date().empty([null, '']).required().messages(messages).iso(),
+  expirationDate: Joi.date().empty([null, '']).required().min('now').messages(messages).iso(),
 });
 
 const update = Joi.object({
