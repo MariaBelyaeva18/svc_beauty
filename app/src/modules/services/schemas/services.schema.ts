@@ -15,16 +15,18 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 const create = Joi.object({
-  materialName: Joi.string().empty([null, '']).required().messages(messages),
-  amount: Joi.number().empty([null, '']).required().min(1).messages(messages),
-  expirationDate: Joi.date().empty([null, '']).required().min('now').messages(messages).iso(),
+  name: Joi.string().empty([null, '']).required().messages(messages),
+  description: Joi.string().empty([null, '']).messages(messages),
+  cost: Joi.number().empty([null, '']).required().min(1).messages(messages),
+  duration: Joi.string().empty([null, '']).required().messages(messages),
 });
 
 const update = Joi.object({
   id: Joi.string().empty([null, '']).required().messages(messages),
-  materialName: Joi.string().empty([null, '']).required().messages(messages),
-  amount: Joi.number().empty([null, '']).required().min(1).messages(messages),
-  expirationDate: Joi.date().empty([null, '']).required().messages(messages).iso(),
+  name: Joi.string().empty([null, '']).required().messages(messages),
+  description: Joi.string().empty([null, '']).messages(messages),
+  cost: Joi.number().empty([null, '']).required().min(1).messages(messages),
+  duration: Joi.string().empty([null, '']).required().messages(messages),
 });
 
 export default {
