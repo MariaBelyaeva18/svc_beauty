@@ -20,7 +20,7 @@ export class ServicesRepository {
             name,
             description,
             cost,
-            duration
+            to_char(duration, 'HH24:MI') as duration
         FROM services
         ORDER BY name ASC
         LIMIT :limit
