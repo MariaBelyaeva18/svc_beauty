@@ -8,11 +8,9 @@ const messages = {
   'number.base': 'errorInvalidType',
   'date.base': 'errorInvalidType',
   'number.min': 'errorMinValue',
+  'date.min': 'errorMinValue',
   'date.iso': 'errorInvalidDateFormat',
 };
-
-const today = new Date();
-today.setHours(0, 0, 0, 0);
 
 const create = Joi.object({
   name: Joi.string().empty([null, '']).required().messages(messages),

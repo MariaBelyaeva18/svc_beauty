@@ -38,11 +38,30 @@ export class EmployeeAbsenceService {
         date_from: dto.dateFrom,
         date_to: dto.dateTo,
         reason: dto.reason,
-        deletedAt: dto.deletedAt,
       },
       {
         where: {
           id: dto.id,
+        },
+      },
+    );
+
+    return {
+      message: 'Отсутствие успешно обновлено',
+    };
+  }
+
+  /** Обновление отсутствия */
+  async delete(id: string): PromiseResponseDto {
+    const date = new Date(Date.now());
+    const isoString = date.toISOString();
+    await this.sequelize.models.EmployeeAbsenceModel.update(
+      {
+        deletedAt: isoString,
+      },
+      {
+        where: {
+          id,
         },
       },
     );
