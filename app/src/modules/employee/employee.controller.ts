@@ -20,7 +20,12 @@ import { EmployeeUpdateDto } from './dto/employee.update.dto';
 import { EmployeeGetDetailInfoDtoResponse } from './dto/responses/employee.getDetailInfo.dto.response';
 import { EmployeeGetListDtoResponse } from './dto/responses/employee.getList.dto.response';
 import { EmployeeService } from './employee.service';
+import employeeSchema from './schemas/employee.schema';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
+import { VALIDATION_ERROR } from '../../messages/validation.messages';
+import JoiObjectValidationPipe from '../../pipes/JoiObjectValidationPipe';
+import { JsonParsePipe } from '../../pipes/JsonParse.pipe';
+import employeeAbsenceSchema from '../employee-absence/schemas/employee-absence.schema';
 
 @Controller('employee')
 export class EmployeeController {
@@ -47,24 +52,24 @@ export class EmployeeController {
       },
     }),
   )
-  async create(@UploadedFile() file: Express.Multer.File, @Body('data') dto: string) {
-    // Преобразуем строку JSON в объект
-    const parsedDto = JSON.parse(dto);
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('data', new JsonParsePipe()) data: EmployeeCreateDto,
+  ) {
+    const pipe = new JoiObjectValidationPipe(employeeSchema.create, VALIDATION_ERROR);
+    const validatedData = await pipe.transform(data, { type: 'body' });
 
     // Преобразуем в экземпляр DTO
-    const updatedDto = plainToInstance(EmployeeCreateDto, parsedDto);
-
-    // Валидируем DTO
-    const errors = await validate(updatedDto);
-    if (errors.length > 0) {
-      throw new BadRequestException(errors);
-    }
+    const updatedDto = plainToInstance(EmployeeCreateDto, validatedData);
 
     return this.employeeService.create(updatedDto, file);
   }
 
   @Put()
-  update(@Body() dto: EmployeeUpdateDto): PromiseResponseDto {
+  update(
+    @Body(new JoiObjectValidationPipe(employeeSchema.update, VALIDATION_ERROR))
+    dto: EmployeeUpdateDto,
+  ): PromiseResponseDto {
     return this.employeeService.update(dto);
   }
 
