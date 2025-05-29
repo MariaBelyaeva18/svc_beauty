@@ -30,6 +30,7 @@
     "body-parser": "^1.20.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "joi": "17.13.3",
     "nanoid": "3.3.4",
     "pdfkit-table": "^0.1.99",
     "pg": "8.13.0",
@@ -37,8 +38,7 @@
     "request-ip": "^3.3.0",
     "rimraf": "3.0.2",
     "sequelize": "6.37.4",
-    "sequelize-typescript": "2.1.6",
-    "joi": "17.13.3"
+    "sequelize-typescript": "2.1.6"
   },
   "devDependencies": {
     "@nestjs/cli": "9.4.2",

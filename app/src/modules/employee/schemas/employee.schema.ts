@@ -12,17 +12,11 @@ const messages = {
   'date.iso': 'errorInvalidDateFormat',
 };
 
-const phoneRegex = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/; // Маска: +7 (XXX) XXX-XX-XX
-
 const create = Joi.object({
   name: Joi.string().empty([null, '']).required().messages(messages),
   middleName: Joi.string().empty([null, '']).required().messages(messages),
   lastName: Joi.string().empty([null, '']).required().messages(messages),
-  phone: Joi.string()
-    .empty([null, ''])
-    .pattern(phoneRegex)
-    .message('Телефон должен быть в формате: +7 (XXX) XXX-XX-XX')
-    .messages(messages),
+  phone: Joi.string().empty([null, '']).required().messages(messages),
   username: Joi.string().empty([null, '']).required().messages(messages),
   password: Joi.string().empty([null, '']).required().messages(messages),
   roleId: Joi.string().empty([null, '']).required().messages(messages),
@@ -36,7 +30,7 @@ const update = Joi.object({
   name: Joi.string().empty([null, '']).required().messages(messages),
   middleName: Joi.string().empty([null, '']).required().messages(messages),
   lastName: Joi.string().empty([null, '']).required().messages(messages),
-  phone: Joi.string().empty([null, '']).messages(messages),
+  phone: Joi.string().empty([null, '']).required().messages(messages),
   username: Joi.string().empty([null, '']).required().messages(messages),
   password: Joi.string().empty([null, '']).required().messages(messages),
   roleId: Joi.string().empty([null, '']).required().messages(messages),
