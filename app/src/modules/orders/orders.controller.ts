@@ -16,11 +16,15 @@ import { OrdersUpdateDto } from './dto/orders.update.dto';
 import { OrdersGetListResponseDto } from './dto/responses/orders.getList.response.dto';
 import { OrdersGetMastersListResponseDto } from './dto/responses/orders.getMastersList.response.dto';
 import { OrdersService } from './orders.service';
+import { ScheduleService } from './schedule.service';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly scheduleService: ScheduleService,
+  ) {}
 
   @Post()
   create(@Body() dto: OrdersCreateDto): PromiseResponseDto {
@@ -30,6 +34,12 @@ export class OrdersController {
   @Put()
   update(@Body() dto: OrdersUpdateDto): PromiseResponseDto {
     return this.ordersService.update(dto);
+  }
+
+  @Get('/')
+  get(@Query() dto: { serviceId: string; masterId: string; date: string }) {
+    const { serviceId, masterId, date } = dto;
+    return this.scheduleService.getAvailableSlots(serviceId, masterId, date);
   }
 
   @Get('/list')

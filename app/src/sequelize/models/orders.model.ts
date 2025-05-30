@@ -40,6 +40,13 @@ export class OrdersModel extends Model<IOrder> implements IOrder {
   })
   execution_date: Date;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    comment: 'Время исполнения заказа',
+  })
+  time: string;
+
   @ForeignKey(() => ServicesModel)
   @Column({
     type: DataType.UUID,
@@ -94,4 +101,6 @@ export class OrdersModel extends Model<IOrder> implements IOrder {
     defaultValue: DataType.NOW,
   })
   updatedAt: Date;
+
+  Service: any;
 }

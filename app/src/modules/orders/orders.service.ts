@@ -25,6 +25,7 @@ export class OrdersService {
   async create(dto: OrdersCreateDto): PromiseResponseDto {
     await this.sequelize.models.OrdersModel.create({
       execution_date: dto.executionDate,
+      time: dto.time,
       service_id: dto.serviceId,
       client_id: dto.clientId,
       master_id: dto.masterId,
@@ -42,6 +43,7 @@ export class OrdersService {
     await this.sequelize.models.OrdersModel.update(
       {
         execution_date: dto.executionDate,
+        time: dto.time,
         service_id: dto.serviceId,
         client_id: dto.clientId,
         master_id: dto.masterId,

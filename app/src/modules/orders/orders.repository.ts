@@ -102,34 +102,27 @@ export class OrdersRepository {
   async getMastersList(
     dto: OrdersGetMastersListRepositoryDto,
   ): Promise<OrdersGetMastersListResponseRepositoryDto[]> {
-    const data = (await this.sequelize.query(
+    return (await this.sequelize.query(
       `
-        SELECT
-          id,
-          CONCAT(users.name,
-                 CASE WHEN users.last_name IS NOT NULL AND users.last_name != '' THEN ' ' || users.last_name ELSE '' END
-          ) AS "name"
-        FROM users
-        WHERE users.role_id = 'master'
-          AND NOT EXISTS(
-          SELECT * FROM employee_absence ea
-          WHERE ea.employee_id = users.id AND :executionDate BETWEEN ea.date_from AND ea.date_to
-        )
-          AND EXISTS(
-          SELECT * FROM employee_service es
-          WHERE es.master_id = users.id AND es.service_id = :serviceId
-        )
-    `,
+          SELECT
+            id,
+            CONCAT(users.name,
+                   CASE WHEN users.last_name IS NOT NULL AND users.last_name != '' THEN ' ' || users.last_name ELSE '' END
+            ) AS "name"
+          FROM users
+          WHERE users.role_id = 'master'
+            AND EXISTS(
+            SELECT * FROM employee_service es
+            WHERE es.master_id = users.id AND es.service_id = :serviceId
+          )
+        `,
       {
         replacements: {
           serviceId: dto.serviceId,
-          executionDate: dto.executionDate,
         },
         type: QueryTypes.SELECT,
       },
     )) as OrdersGetMastersListResponseRepositoryDto[];
-
-    return data;
   }
 
   /** Получение кол-во статусов */
