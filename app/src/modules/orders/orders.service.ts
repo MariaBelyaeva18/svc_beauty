@@ -84,6 +84,7 @@ export class OrdersService {
             name: item.masterName,
           },
           description: item.description,
+          time: item.time,
           status: item.status,
         })),
         count: data.count,

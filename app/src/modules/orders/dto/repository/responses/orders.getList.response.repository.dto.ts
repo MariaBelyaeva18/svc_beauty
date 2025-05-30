@@ -6,6 +6,8 @@ export class OrdersGetListResponseRepositoryDto {
 
     executionDate: string;
 
+    time: string;
+
     serviceId: string;
 
     serviceName: string;

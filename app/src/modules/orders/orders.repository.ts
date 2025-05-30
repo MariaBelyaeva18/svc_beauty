@@ -49,6 +49,7 @@ export class OrdersRepository {
               orders.id,
               orders.execution_date AS "executionDate",
               orders.service_id AS "serviceId",
+              orders.time,
               services.name AS "serviceName",
               orders.client_id AS "clientId",
               CONCAT(cu.name,
