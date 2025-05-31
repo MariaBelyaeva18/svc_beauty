@@ -79,7 +79,6 @@ export class ScheduleService {
         type: QueryTypes.SELECT,
       },
     );
-    console.log(absence);
 
     if (absence) {
       return [];
