@@ -14,9 +14,9 @@ const messages = {
 
 const create = Joi.object({
   name: Joi.string().empty([null, '']).required().messages(messages),
-  middleName: Joi.string().empty([null, '']).required().messages(messages),
+  middleName: Joi.string().empty([null, '']).messages(messages),
   lastName: Joi.string().empty([null, '']).required().messages(messages),
-  phone: Joi.string().empty([null, '']).required().messages(messages),
+  phone: Joi.string().empty([null, '']).messages(messages),
   username: Joi.string().empty([null, '']).required().messages(messages),
   password: Joi.string().empty([null, '']).required().messages(messages),
   roleId: Joi.string().empty([null, '']).required().messages(messages),
@@ -28,9 +28,9 @@ const create = Joi.object({
 const update = Joi.object({
   id: Joi.string().empty([null, '']).required().messages(messages),
   name: Joi.string().empty([null, '']).required().messages(messages),
-  middleName: Joi.string().empty([null, '']).required().messages(messages),
+  middleName: Joi.string().empty([null, '']).messages(messages),
   lastName: Joi.string().empty([null, '']).required().messages(messages),
-  phone: Joi.string().empty([null, '']).required().messages(messages),
+  phone: Joi.string().empty([null, '']).messages(messages),
   username: Joi.string().empty([null, '']).required().messages(messages),
   password: Joi.string().empty([null, '']).required().messages(messages),
   roleId: Joi.string().empty([null, '']).required().messages(messages),

@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import authSchema from './schemas/auth.schema';
+import { VALIDATION_ERROR } from '../../messages/validation.messages';
+import JoiObjectValidationPipe from '../../pipes/JoiObjectValidationPipe';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +14,7 @@ export class AuthController {
   }
 
   @Post('/register')
-  async registerUser(@Body() dto) {
+  async registerUser(@Body(new JoiObjectValidationPipe(authSchema.create, VALIDATION_ERROR)) dto) {
     return this.authService.registerUser(dto);
   }
 }
