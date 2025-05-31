@@ -17,7 +17,10 @@ import { OrdersGetListResponseDto } from './dto/responses/orders.getList.respons
 import { OrdersGetMastersListResponseDto } from './dto/responses/orders.getMastersList.response.dto';
 import { OrdersService } from './orders.service';
 import { ScheduleService } from './schedule.service';
+import ordersSchema from './schemas/orders.schema';
 import { PromiseResponseDto } from '../../dto/promise.response.dto';
+import { VALIDATION_ERROR } from '../../messages/validation.messages';
+import JoiObjectValidationPipe from '../../pipes/JoiObjectValidationPipe';
 
 @Controller('orders')
 export class OrdersController {
@@ -27,12 +30,16 @@ export class OrdersController {
   ) {}
 
   @Post()
-  create(@Body() dto: OrdersCreateDto): PromiseResponseDto {
+  create(
+    @Body(new JoiObjectValidationPipe(ordersSchema.create, VALIDATION_ERROR)) dto: OrdersCreateDto,
+  ): PromiseResponseDto {
     return this.ordersService.create(dto);
   }
 
   @Put()
-  update(@Body() dto: OrdersUpdateDto): PromiseResponseDto {
+  update(
+    @Body(new JoiObjectValidationPipe(ordersSchema.update, VALIDATION_ERROR)) dto: OrdersUpdateDto,
+  ): PromiseResponseDto {
     return this.ordersService.update(dto);
   }
 

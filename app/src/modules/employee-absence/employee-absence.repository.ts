@@ -30,7 +30,8 @@ export class EmployeeAbsenceRepository {
         FROM employee_absence ea
                LEFT JOIN users ON users.id = ea.employee_id
         WHERE ea."deletedAt" IS NULL AND :month BETWEEN EXTRACT(MONTH FROM ea.date_from) AND EXTRACT(MONTH FROM ea.date_to)
-          AND :year BETWEEN EXTRACT(YEAR FROM ea.date_from) AND EXTRACT(YEAR FROM ea.date_to);
+          AND :year BETWEEN EXTRACT(YEAR FROM ea.date_from) AND EXTRACT(YEAR FROM ea.date_to)
+        ORDER BY "employeeName" ASC;
       `,
       {
         replacements: {

@@ -67,6 +67,24 @@ export class ScheduleService {
 
     const serviceDurationMinutes = this.timeStringToMinutes(service.duration);
 
+    const [absence] = await this.sequelize.query(
+      `
+        SELECT * FROM employee_absence
+        WHERE employee_id = :masterId
+        AND :selectedDate BETWEEN date_from AND date_to
+        LIMIT 1;
+        `,
+      {
+        replacements: { masterId, selectedDate: date },
+        type: QueryTypes.SELECT,
+      },
+    );
+    console.log(absence);
+
+    if (absence) {
+      return [];
+    }
+
     // 3. Рабочий день
     const WORK_START = 9 * 60; // 09:00
     const WORK_END = 18 * 60; // 18:00
@@ -101,7 +119,6 @@ export class ScheduleService {
       },
     );
 
-    // 5. Занятые интервалы (с поправкой на +3 часа)
     const occupiedIntervals: [number, number][] = orders.map(
       (order: { execution_date: any; service_duration: any; time: string }) => {
         const [hours, minutes] = order.time.split(':').map(Number);

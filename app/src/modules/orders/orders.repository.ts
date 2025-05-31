@@ -47,7 +47,7 @@ export class OrdersRepository {
       `
           SELECT
               orders.id,
-              orders.execution_date AS "executionDate",
+              orders.execution_date + INTERVAL '3 hours' AS "executionDate",
               orders.service_id AS "serviceId",
               orders.time,
               services.name AS "serviceName",
@@ -60,12 +60,13 @@ export class OrdersRepository {
                      CASE WHEN mu.last_name IS NOT NULL AND mu.last_name != '' THEN ' ' || mu.last_name ELSE '' END
               ) AS "masterName",
               orders.description,
-              get_order_status(orders.status_id, orders.execution_date) AS "status"
+              get_order_status(orders.status_id, orders.execution_date + INTERVAL '3 hours') AS "status"
           FROM orders
           LEFT JOIN services ON services.id = orders.service_id
           LEFT JOIN users cu ON cu.id = orders.client_id
           LEFT JOIN users mu ON mu.id = orders.master_id
           ${whereSql}
+          ORDER BY orders."execution_date" ASC
           LIMIT :limit
           OFFSET :offset
       `,
