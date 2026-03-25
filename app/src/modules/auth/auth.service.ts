@@ -11,6 +11,12 @@ export class AuthService {
     private readonly jwtTokenService: JwtTokenService,
   ) {}
 
+  async logout() {
+    return {
+      message: 'Успешный выход из системы',
+    };
+  }
+
   async checkUser(param: { username: string; password: string }) {
     const data = await this.sequelize.query(
       `

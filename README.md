@@ -62,8 +62,9 @@ npx sequelize-cli db:migrate
 
 ## Авторизация
 
-- `POST /auth` — логин, в ответе возвращается `token`.
+- `POST /auth/login` — логин, в ответе возвращается `token`.
 - `POST /auth/register` — регистрация.
+- `POST /auth/logout` — выход (требует `Authorization: Bearer <token>`).
 
 Все остальные маршруты требуют заголовок:
 
@@ -84,4 +85,17 @@ Authorization: Bearer <token>
   "path": "/some/route",
   "timestamp": "2026-03-25T00:00:00.000Z"
 }
+```
+
+## Troubleshooting
+
+### EACCES на `dist/` при `npm run build`
+
+Если сборка падает с ошибкой вида `EACCES: permission denied, unlink dist/...`, обычно это означает, что папка `app/dist` была создана под другим пользователем (например, запускали сборку через `sudo`).
+
+Починить:
+
+```bash
+cd app
+sudo chown -R "$(id -u)":"$(id -g)" ./dist
 ```
