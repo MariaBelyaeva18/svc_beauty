@@ -44,6 +44,7 @@ export JWT_EXPIRES_IN_SECONDS=86400
 ```bash
 cd app
 npm ci
+source ./scripts/student-env.sh
 npm run start:dev
 ```
 
@@ -55,6 +56,7 @@ npm run start:dev
 
 ```bash
 cd app
+source ./scripts/student-env.sh
 npx sequelize-cli db:migrate
 ```
 
