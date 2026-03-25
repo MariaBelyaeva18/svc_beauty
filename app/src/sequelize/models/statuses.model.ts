@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 
-export type orderStatuses = 'done' | 'accepted' | 'canceled' | 'created';
+export type orderStatuses = string;
 
 interface IStatus {
   id: orderStatuses;

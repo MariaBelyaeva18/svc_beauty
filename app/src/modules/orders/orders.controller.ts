@@ -62,19 +62,12 @@ export class OrdersController {
     return this.ordersService.getMastersList(dto);
   }
 
-  @Patch('/cancel/:orderId')
-  cancelOrder(@Param('orderId') orderId: string): PromiseResponseDto {
-    return this.ordersService.changeOrderStatus(orderId, 'canceled');
-  }
-
-  @Patch('/accept/:orderId')
-  acceptOrder(@Param('orderId') orderId: string): PromiseResponseDto {
-    return this.ordersService.changeOrderStatus(orderId, 'accepted');
-  }
-
-  @Patch('/done/:orderId')
-  doneOrder(@Param('orderId') orderId: string): PromiseResponseDto {
-    return this.ordersService.changeOrderStatus(orderId, 'done');
+  @Patch('/:statusId/:orderId')
+  acceptOrder(
+    @Param('orderId') orderId: string,
+    @Param('statusId') statusId: string,
+  ): PromiseResponseDto {
+    return this.ordersService.changeOrderStatus(orderId, statusId);
   }
 
   @Get('report')

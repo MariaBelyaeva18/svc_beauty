@@ -26,7 +26,7 @@ export default class JoiObjectValidationPipe implements PipeTransform {
     if (typeof value === 'string') {
       return value;
     }
-    const { error } = this.schema.validate(value, {
+    const { error, value: validatedValue } = this.schema.validate(value, {
       abortEarly: false,
       stripUnknown: true,
       context,
@@ -42,6 +42,6 @@ export default class JoiObjectValidationPipe implements PipeTransform {
         data: { errorList },
       });
     }
-    return value;
+    return validatedValue;
   }
 }
