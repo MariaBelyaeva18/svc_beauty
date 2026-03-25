@@ -12,20 +12,20 @@ import { UsersModel } from './models/users.model';
 
 export const sequelizeConfig = {
   dialect: 'postgres',
-  host: process.env.POSTGRES_HOST,
-  port: +process.env.POSTGRES_PORT,
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB,
+  host: process.env.POSTGRES_HOST ?? 'localhost',
+  port: Number(process.env.POSTGRES_PORT ?? 5432),
+  username: process.env.POSTGRES_USER ?? 'developer',
+  password: process.env.POSTGRES_PASSWORD ?? '123',
+  database: process.env.POSTGRES_DB ?? 'beauty_shop',
   autoLoadModels: false,
   synchronize: false,
   logging: false,
   dialectOptions: {
-    statement_timeout: +process.env.POSTGRES_STATEMENT_TIMEOUT,
+    statement_timeout: Number(process.env.POSTGRES_STATEMENT_TIMEOUT ?? 30000),
   },
   pool: {
-    max: +process.env.POSTGRES_POOL_MAX,
-    min: +process.env.POSTGRES_POOL_MIN,
+    max: Number(process.env.POSTGRES_POOL_MAX ?? 10),
+    min: Number(process.env.POSTGRES_POOL_MIN ?? 0),
     acquire: 30000,
     idle: 10000,
   },

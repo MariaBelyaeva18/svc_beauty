@@ -25,8 +25,9 @@ export class BackupService {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const backupPath = `./backups/backup-${timestamp}.sql`;
 
-    /** Используем имя контейнера PostgreSQL в качестве хоста */
-    const command = `pg_dump -U ${process.env.POSTGRES_USER} -h postgres -d ${process.env.POSTGRES_DB} -f ${backupPath}`;
+    const host = process.env.POSTGRES_HOST ?? 'localhost';
+    const port = process.env.POSTGRES_PORT ?? '5432';
+    const command = `pg_dump -U ${process.env.POSTGRES_USER} -h ${host} -p ${port} -d ${process.env.POSTGRES_DB} -f ${backupPath}`;
 
     exec(command, (error, stdout, stderr) => {
       if (error) {
@@ -50,7 +51,9 @@ export class BackupService {
       return;
     }
 
-    const command = `psql -U ${process.env.POSTGRES_USER} -h postgres -d ${process.env.POSTGRES_DB} -f ${backupFilePath}`;
+    const host = process.env.POSTGRES_HOST ?? 'localhost';
+    const port = process.env.POSTGRES_PORT ?? '5432';
+    const command = `psql -U ${process.env.POSTGRES_USER} -h ${host} -p ${port} -d ${process.env.POSTGRES_DB} -f ${backupFilePath}`;
 
     exec(command, (error, stdout, stderr) => {
       if (error) {

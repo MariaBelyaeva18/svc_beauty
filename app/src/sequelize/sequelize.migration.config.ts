@@ -1,4 +1,5 @@
 import { Dialect } from 'sequelize';
+import * as process from 'node:process';
 
 interface ISequelizeConfig {
   [key: string]: {
@@ -11,11 +12,11 @@ interface ISequelizeConfig {
   };
 }
 
-const username = 'developer';
-const password = '123';
-const database = 'beauty_shop';
-const host = 'localhost';
-const port = '5432';
+const username = process.env.POSTGRES_USER ?? 'developer';
+const password = process.env.POSTGRES_PASSWORD ?? '123';
+const database = process.env.POSTGRES_DB ?? 'beauty_shop';
+const host = process.env.POSTGRES_HOST ?? 'localhost';
+const port = process.env.POSTGRES_PORT ?? '5432';
 
 const sequelizeMigrationConfig: ISequelizeConfig = {
   development: {

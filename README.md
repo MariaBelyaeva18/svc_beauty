@@ -23,6 +23,15 @@ export POSTGRES_POOL_MAX=10
 export POSTGRES_POOL_MIN=0
 ```
 
+### Учебная БД (student)
+
+В репозитории есть готовый файл с переменными для подключения к PostgreSQL:
+
+```bash
+cd app
+source ./scripts/student-env.sh
+```
+
 JWT:
 
 ```bash
@@ -76,4 +85,3 @@ Authorization: Bearer <token>
   "timestamp": "2026-03-25T00:00:00.000Z"
 }
 ```
-
