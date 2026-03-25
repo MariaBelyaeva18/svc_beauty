@@ -1,5 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { BackupService } from './backup.service';
+import { BackupRestoreDto } from './dto/backup.restore.dto';
 
 /** Контроллер нужен исключительно для теста.
  * Бэкапы будут делаться автоматически раз в день */
@@ -13,7 +14,7 @@ export class BackupController {
   }
 
   @Get('restore')
-  async restoreBackup(@Query('backupFile') backupFile: string) {
-    return this.backupService.restoreBackup(backupFile);
+  async restoreBackup(@Query() dto: BackupRestoreDto) {
+    return this.backupService.restoreBackup(dto.backupFile);
   }
 }

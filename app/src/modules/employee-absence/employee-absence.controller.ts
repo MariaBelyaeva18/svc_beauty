@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Get, Query, Delete, Param } from '@nestjs/common';
+import { Controller, Post, Body, Put, Get, Query, Param } from '@nestjs/common';
 import { EmployeeAbsenceCreateDto } from './dto/employee-absence.create.dto';
 import { EmployeeAbsenceGetListDto } from './dto/employee-absence.getList.dto';
 import { EmployeeAbsenceUpdateDto } from './dto/employee-absence.update.dto';

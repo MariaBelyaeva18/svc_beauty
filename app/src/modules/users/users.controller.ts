@@ -9,7 +9,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import usersSchema from './schemas/users.schema';
 import { UsersService } from './users.service';
+import { VALIDATION_ERROR } from '../../messages/validation.messages';
+import JoiObjectValidationPipe from '../../pipes/JoiObjectValidationPipe';
 
 @Controller('users')
 export class UsersController {
@@ -21,7 +24,10 @@ export class UsersController {
   }
 
   @Patch(':userId')
-  updateUserInfo(@Param('userId') userId: string, @Body() dto: any) {
+  updateUserInfo(
+    @Param('userId') userId: string,
+    @Body(new JoiObjectValidationPipe(usersSchema.update, VALIDATION_ERROR)) dto: any,
+  ) {
     return this.usersService.updateUserInfo(userId, dto);
   }
 

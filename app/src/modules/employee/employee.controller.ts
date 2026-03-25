@@ -9,11 +9,9 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
-  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
 import { EmployeeCreateDto } from './dto/employee.create.dto';
 import { EmployeeGetListDto } from './dto/employee.getList.dto';
 import { EmployeeUpdateDto } from './dto/employee.update.dto';
@@ -25,7 +23,6 @@ import { PromiseResponseDto } from '../../dto/promise.response.dto';
 import { VALIDATION_ERROR } from '../../messages/validation.messages';
 import JoiObjectValidationPipe from '../../pipes/JoiObjectValidationPipe';
 import { JsonParsePipe } from '../../pipes/JsonParse.pipe';
-import employeeAbsenceSchema from '../employee-absence/schemas/employee-absence.schema';
 
 @Controller('employee')
 export class EmployeeController {

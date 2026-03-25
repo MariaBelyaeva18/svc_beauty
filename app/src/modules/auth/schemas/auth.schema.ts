@@ -23,6 +23,12 @@ const create = Joi.object({
   username: Joi.string().empty([null, '']).required().messages(messages),
 });
 
+const login = Joi.object({
+  username: Joi.string().empty([null, '']).required().messages(messages),
+  password: Joi.string().empty([null, '']).required().messages(messages),
+});
+
 export default {
   create,
+  login,
 };

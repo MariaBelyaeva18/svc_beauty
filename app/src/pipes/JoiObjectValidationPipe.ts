@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, PipeTransform, UnprocessableEntityException } from '@nestjs/common';
 import { ObjectSchema } from 'joi';
 
 @Injectable()
@@ -37,7 +37,7 @@ export default class JoiObjectValidationPipe implements PipeTransform {
         const { path, message } = detail;
         this.placeholder(path, message, errorList);
       });
-      throw new BadRequestException({
+      throw new UnprocessableEntityException({
         message: this.errorMessage,
         data: { errorList },
       });

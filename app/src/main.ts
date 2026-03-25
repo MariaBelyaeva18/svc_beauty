@@ -1,8 +1,25 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { VALIDATION_ERROR } from './messages/validation.messages';
+
+const buildErrorList = (errors) =>
+  errors.reduce((acc, err) => {
+    const key = err.property;
+    const hasChildren = Array.isArray(err.children) && err.children.length > 0;
+    const constraints = err.constraints ? Object.values(err.constraints) : [];
+
+    if (hasChildren) {
+      return { ...acc, [key]: buildErrorList(err.children) };
+    }
+    if (constraints.length > 0) {
+      return { ...acc, [key]: constraints[0] };
+    }
+    return { ...acc, [key]: 'invalid' };
+  }, {});
 
 async function start() {
   const PORT = process.env.PORT || 8080;
@@ -19,8 +36,21 @@ async function start() {
     prefix: '/uploads',
   });
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: false }));
+  app.useGlobalFilters(new AllExceptionsFilter());
 
-  await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      forbidUnknownValues: false,
+      whitelist: true,
+      exceptionFactory: (errors) =>
+        new UnprocessableEntityException({
+          message: VALIDATION_ERROR,
+          data: { errorList: buildErrorList(errors) },
+        }),
+    }),
+  );
+
+  await app.listen(PORT, () => Logger.log(`Server started on port = ${PORT}`));
 }
 start();

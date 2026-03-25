@@ -10,6 +10,7 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { OrdersCreateDto } from './dto/orders.create.dto';
+import { OrdersGetAvailableSlotsDto } from './dto/orders.getAvailableSlots.dto';
 import { OrdersGetListDto } from './dto/orders.getList.dto';
 import { OrdersGetMastersListDto } from './dto/orders.getMastersList.dto';
 import { OrdersUpdateDto } from './dto/orders.update.dto';
@@ -44,7 +45,7 @@ export class OrdersController {
   }
 
   @Get('/')
-  get(@Query() dto: { serviceId: string; masterId: string; date: string }) {
+  get(@Query() dto: OrdersGetAvailableSlotsDto) {
     const { serviceId, masterId, date } = dto;
     return this.scheduleService.getAvailableSlots(serviceId, masterId, date);
   }

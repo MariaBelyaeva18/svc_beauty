@@ -1,12 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { QueryTypes, Sequelize } from 'sequelize';
+import { JwtTokenService } from '../../common/jwt/jwt.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectConnection()
     private readonly sequelize: Sequelize,
+    private readonly jwtTokenService: JwtTokenService,
   ) {}
 
   async checkUser(param: { username: string; password: string }) {
@@ -38,8 +40,15 @@ export class AuthService {
       throw new BadRequestException('Неправильный логин или пароль');
     }
 
+    const token = this.jwtTokenService.sign({
+      sub: (data as any).id,
+      login: (data as any).login,
+      roleId: (data as any).role_id,
+    });
+
     return {
       data,
+      token,
       message: 'Успешный вход в систему',
     };
   }

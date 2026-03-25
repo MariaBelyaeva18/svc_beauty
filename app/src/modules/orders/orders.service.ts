@@ -1,7 +1,7 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize';
-import { createReadStream } from 'fs';
+import { createReadStream, createWriteStream } from 'node:fs';
 import * as path from 'node:path';
 import { OrdersCreateDto } from './dto/orders.create.dto';
 import { OrdersGetListDto } from './dto/orders.getList.dto';
@@ -44,9 +44,9 @@ export class OrdersService {
       {
         execution_date: dto.executionDate,
         time: dto.time,
-        service_id: dto.serviceId,
-        client_id: dto.clientId,
-        master_id: dto.masterId,
+        // service_id: dto.serviceId,
+        // client_id: dto.clientId,
+        // master_id: dto.masterId,
         description: dto.description,
         status_id: 'created',
       },
@@ -128,7 +128,7 @@ export class OrdersService {
   async generatePdfReport(): Promise<StreamableFile> {
     const data = await this.ordersRepository.getStatusesForCurrentMonth();
 
-    const fs = require('fs');
+    // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
     const PDFDocument = require('pdfkit-table');
 
     // Данные для таблицы
@@ -143,7 +143,7 @@ export class OrdersService {
     // Создаем PDF документ
     const doc = new PDFDocument({ margin: 30, size: 'A4' });
     // Записываем в файл
-    doc.pipe(fs.createWriteStream(filePath));
+    doc.pipe(createWriteStream(filePath));
 
     // Создаем первую таблицу
     doc.table(tableArray, { width: 300 });
